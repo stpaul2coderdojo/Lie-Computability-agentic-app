@@ -1,0 +1,6 @@
+{
+  "name": "Antigravity Tensor-Lie Complexity Agent",
+  "description": "Agentic engine to decompose deep neural networks & LLMs as tensor reduction expressions, analyze contraction topology, Lie group embeddings, and compute Lie algebraic complexity metrics.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
