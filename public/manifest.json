@@ -1,0 +1,44 @@
+{
+  "id": "/",
+  "name": "Antigravity Tensor-Lie Complexity Agent",
+  "short_name": "TensorLie",
+  "description": "Agentic platform to decompose deep neural networks into tensor reduction expressions and analyze Lie algebraic complexity lattices.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#020617",
+  "theme_color": "#020617",
+  "categories": ["education", "science", "productivity", "utilities"],
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Decompose Model",
+      "url": "/?action=decompose",
+      "description": "Decompose deep neural networks into tensor contractions"
+    },
+    {
+      "name": "Lie Manifold",
+      "url": "/?action=manifold",
+      "description": "Inspect continuous Lie group embedding manifold"
+    },
+    {
+      "name": "Zenodo Paper",
+      "url": "/?action=citation",
+      "description": "View Zenodo publication and DOI reference"
+    }
+  ]
+}

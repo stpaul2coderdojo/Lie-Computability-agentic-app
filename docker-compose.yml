@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  antigravity-tensor-lie:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: antigravity-tensor-lie:latest
+    container_name: antigravity_tensor_lie_agent
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+    restart: unless-stopped

@@ -11,6 +11,8 @@ import { LieComplexityDashboard } from './components/LieComplexityDashboard';
 import { ArchitectureInput } from './components/ArchitectureInput';
 import { AgentDrawer } from './components/AgentDrawer';
 import { ExportModal } from './components/ExportModal';
+import { CitationModal } from './components/CitationModal';
+import { WebAPKModal } from './components/WebAPKModal';
 
 import { ARCHITECTURE_PRESETS } from './data/presets';
 import {
@@ -28,6 +30,7 @@ import {
   generateLieEmbeddingData,
   evaluateLieComplexity
 } from './utils/lieAlgebra';
+import { BookOpen, ExternalLink, Smartphone, Copy, Check } from 'lucide-react';
 
 export function App() {
   const [currentPreset, setCurrentPreset] = useState<ModelArchitecturePreset>(ARCHITECTURE_PRESETS[0]);
@@ -54,6 +57,18 @@ export function App() {
   const [agentResponse, setAgentResponse] = useState<AgentAnalysisResponse | null>(null);
   const [isAgentDrawerOpen, setIsAgentDrawerOpen] = useState<boolean>(false);
   const [isExportModalOpen, setIsExportModalOpen] = useState<boolean>(false);
+  const [isCitationModalOpen, setIsCitationModalOpen] = useState<boolean>(false);
+  const [isWebAPKModalOpen, setIsWebAPKModalOpen] = useState<boolean>(false);
+  const [hasCopiedCitation, setHasCopiedCitation] = useState<boolean>(false);
+
+  const mainCitationText = `[1] A. K. Dr Bheemaiah, 'Lie Computability of Lie Lattices of Tensor based topologies of networks.', Sep. 02, 2026, Zenodo. doi: 10.5281/zenodo.22249208.`;
+
+  const handleCopyCitation = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    navigator.clipboard.writeText(mainCitationText);
+    setHasCopiedCitation(true);
+    setTimeout(() => setHasCopiedCitation(false), 2000);
+  };
 
   // Synchronize when preset changes
   const handleSelectPreset = (preset: ModelArchitecturePreset) => {
@@ -185,12 +200,52 @@ export function App() {
         onRunAgentAnalysis={handleRunAgentAnalysis}
         isAgentRunning={isAgentRunning}
         onOpenExport={() => setIsExportModalOpen(true)}
+        onOpenCitation={() => setIsCitationModalOpen(true)}
+        onOpenWebAPK={() => setIsWebAPKModalOpen(true)}
         onToggleAgentChat={() => setIsAgentDrawerOpen(!isAgentDrawerOpen)}
         isChatOpen={isAgentDrawerOpen}
         activeTab={activeTab}
         onChangeTab={setActiveTab}
         complexityScore={complexity.compositeScore}
       />
+
+      {/* Persistent Academic Citation Banner */}
+      <div className="bg-slate-950/95 border-b border-purple-900/30 px-3 sm:px-4 py-1.5 text-xs font-mono">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-2">
+          <div
+            onClick={() => setIsCitationModalOpen(true)}
+            className="flex items-center gap-2 text-slate-300 hover:text-purple-300 transition-colors cursor-pointer min-w-0"
+          >
+            <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-purple-950 text-purple-300 border border-purple-700/50 shrink-0">
+              Reference [1]
+            </span>
+            <p className="truncate text-xs">
+              <span className="text-slate-400 font-medium">A. K. Dr Bheemaiah</span>, ‘Lie Computability of Lie Lattices of Tensor based topologies of networks.’ (2026, Zenodo).
+            </p>
+          </div>
+
+          <div className="flex items-center gap-2 shrink-0">
+            <button
+              onClick={handleCopyCitation}
+              className="flex items-center gap-1 px-2 py-0.5 rounded bg-slate-900 hover:bg-slate-800 text-[11px] text-slate-400 hover:text-slate-200 border border-slate-800 transition-colors cursor-pointer"
+              title="Copy citation string"
+            >
+              {hasCopiedCitation ? <Check className="w-3 h-3 text-emerald-400" /> : <Copy className="w-3 h-3" />}
+              <span>{hasCopiedCitation ? 'Copied' : 'Cite'}</span>
+            </button>
+
+            <a
+              href="https://doi.org/10.5281/zenodo.22249208"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1 px-2 py-0.5 rounded bg-purple-950/60 hover:bg-purple-900/80 text-purple-300 text-[11px] border border-purple-800/60 transition-colors"
+            >
+              <span>doi: 10.5281/zenodo.22249208</span>
+              <ExternalLink className="w-3 h-3" />
+            </a>
+          </div>
+        </div>
+      </div>
 
       {/* Main Workspace Area */}
       <main className="flex-1 max-w-7xl w-full mx-auto p-3 sm:p-4 md:p-6 flex flex-col">
@@ -237,17 +292,37 @@ export function App() {
 
       {/* Research Authorship & Institutional Footer */}
       <footer className="border-t border-slate-900 bg-slate-950/80 px-4 py-3 text-xs text-slate-500 font-mono">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 text-center sm:text-left">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
           <div className="flex items-center gap-2 flex-wrap justify-center sm:justify-start">
             <span className="text-slate-400">Principal Author:</span>
             <span className="text-cyan-300 font-semibold">Dr. Bheemaiah Anil Kumar</span>
             <span className="text-slate-700">•</span>
             <span className="text-purple-300 font-medium">Synergy Robotics</span>
+            <span className="text-slate-700">•</span>
+            <button
+              onClick={() => setIsCitationModalOpen(true)}
+              className="text-purple-400 hover:text-purple-300 underline underline-offset-2 transition-colors cursor-pointer"
+            >
+              [1] Zenodo doi: 10.5281/zenodo.22249208
+            </button>
           </div>
-          <div className="text-[11px] text-slate-600 flex items-center gap-3">
-            <span>Tensor Contraction Topology &amp; Lie Complexity</span>
-            <span>•</span>
-            <span>Antigravity Engine</span>
+
+          <div className="flex items-center gap-3 justify-center sm:justify-end">
+            <button
+              onClick={() => setIsWebAPKModalOpen(true)}
+              className="flex items-center gap-1.5 px-2.5 py-1 rounded bg-slate-900 hover:bg-slate-800 text-cyan-400 border border-slate-800 text-[11px] transition-colors cursor-pointer"
+            >
+              <Smartphone className="w-3.5 h-3.5" />
+              <span>WebAPK / Install</span>
+            </button>
+
+            <button
+              onClick={() => setIsCitationModalOpen(true)}
+              className="flex items-center gap-1.5 px-2.5 py-1 rounded bg-slate-900 hover:bg-slate-800 text-purple-400 border border-slate-800 text-[11px] transition-colors cursor-pointer"
+            >
+              <BookOpen className="w-3.5 h-3.5" />
+              <span>Citations</span>
+            </button>
           </div>
         </div>
       </footer>
@@ -270,6 +345,18 @@ export function App() {
         lieData={lieData}
         complexity={complexity}
         modelName={currentPreset.name}
+      />
+
+      {/* Academic Citation Modal */}
+      <CitationModal
+        isOpen={isCitationModalOpen}
+        onClose={() => setIsCitationModalOpen(false)}
+      />
+
+      {/* WebAPK & PWA Installation Modal */}
+      <WebAPKModal
+        isOpen={isWebAPKModalOpen}
+        onClose={() => setIsWebAPKModalOpen(false)}
       />
     </div>
   );

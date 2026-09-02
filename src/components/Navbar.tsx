@@ -13,7 +13,8 @@ import {
   Cpu,
   Orbit,
   Zap,
-  Info
+  BookOpen,
+  Smartphone
 } from 'lucide-react';
 import { LieGroupType, ModelArchitecturePreset } from '../types';
 import { ARCHITECTURE_PRESETS } from '../data/presets';
@@ -26,6 +27,8 @@ interface NavbarProps {
   onRunAgentAnalysis: () => void;
   isAgentRunning: boolean;
   onOpenExport: () => void;
+  onOpenCitation: () => void;
+  onOpenWebAPK: () => void;
   onToggleAgentChat: () => void;
   isChatOpen: boolean;
   activeTab: 'topology' | 'lie-embedding' | 'complexity' | 'editor';
@@ -41,6 +44,8 @@ export const Navbar: React.FC<NavbarProps> = ({
   onRunAgentAnalysis,
   isAgentRunning,
   onOpenExport,
+  onOpenCitation,
+  onOpenWebAPK,
   onToggleAgentChat,
   isChatOpen,
   activeTab,
@@ -75,10 +80,26 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
           </div>
 
-          {/* Quick Score Badge on mobile */}
-          <div className="md:hidden flex items-center gap-1 px-2 py-1 rounded bg-slate-900 border border-slate-800">
-            <span className="text-[10px] text-slate-400">Ω_Lie</span>
-            <span className="text-xs font-mono font-bold text-cyan-400">{complexityScore}</span>
+          {/* Quick Action Badges on mobile */}
+          <div className="md:hidden flex items-center gap-1.5">
+            <button
+              onClick={onOpenCitation}
+              className="p-1.5 rounded bg-purple-950/60 border border-purple-800/50 text-purple-300 text-xs flex items-center gap-1"
+              title="Zenodo Publication Reference"
+            >
+              <BookOpen className="w-3.5 h-3.5" />
+            </button>
+            <button
+              onClick={onOpenWebAPK}
+              className="p-1.5 rounded bg-cyan-950/60 border border-cyan-800/50 text-cyan-300 text-xs flex items-center gap-1"
+              title="WebAPK / Install App"
+            >
+              <Smartphone className="w-3.5 h-3.5" />
+            </button>
+            <div className="flex items-center gap-1 px-2 py-1 rounded bg-slate-900 border border-slate-800">
+              <span className="text-[10px] text-slate-400">Ω</span>
+              <span className="text-xs font-mono font-bold text-cyan-400">{complexityScore}</span>
+            </div>
           </div>
         </div>
 
@@ -87,7 +108,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           <button
             id="tab-topology"
             onClick={() => onChangeTab('topology')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-all whitespace-nowrap ${
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-all whitespace-nowrap cursor-pointer ${
               activeTab === 'topology'
                 ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40 shadow-sm'
                 : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 border border-transparent'
@@ -100,7 +121,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           <button
             id="tab-lie-embedding"
             onClick={() => onChangeTab('lie-embedding')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-all whitespace-nowrap ${
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-all whitespace-nowrap cursor-pointer ${
               activeTab === 'lie-embedding'
                 ? 'bg-purple-500/20 text-purple-300 border border-purple-500/40 shadow-sm'
                 : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 border border-transparent'
@@ -113,7 +134,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           <button
             id="tab-complexity"
             onClick={() => onChangeTab('complexity')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-all whitespace-nowrap ${
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-all whitespace-nowrap cursor-pointer ${
               activeTab === 'complexity'
                 ? 'bg-indigo-500/20 text-indigo-300 border border-indigo-500/40 shadow-sm'
                 : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 border border-transparent'
@@ -129,7 +150,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           <button
             id="tab-editor"
             onClick={() => onChangeTab('editor')}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-all whitespace-nowrap ${
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-medium transition-all whitespace-nowrap cursor-pointer ${
               activeTab === 'editor'
                 ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 shadow-sm'
                 : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60 border border-transparent'
@@ -141,7 +162,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
 
         {/* Right: Architecture & Action Controls */}
-        <div className="flex items-center gap-2 w-full md:w-auto justify-end">
+        <div className="flex items-center gap-2 w-full md:w-auto justify-end flex-wrap">
           {/* Preset Selector */}
           <div className="relative">
             <select
@@ -177,6 +198,28 @@ export const Navbar: React.FC<NavbarProps> = ({
             </select>
           </div>
 
+          {/* Citation Button */}
+          <button
+            id="btn-open-citation"
+            onClick={onOpenCitation}
+            className="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-purple-950/50 hover:bg-purple-900/60 text-purple-300 border border-purple-700/40 text-xs font-mono transition-all cursor-pointer shadow-sm"
+            title="View Zenodo Paper Citation [1]"
+          >
+            <BookOpen className="w-3.5 h-3.5 text-purple-400" />
+            <span className="font-semibold">DOI: 10.5281</span>
+          </button>
+
+          {/* WebAPK Button */}
+          <button
+            id="btn-open-webapk"
+            onClick={onOpenWebAPK}
+            className="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-cyan-950/50 hover:bg-cyan-900/60 text-cyan-300 border border-cyan-700/40 text-xs font-mono transition-all cursor-pointer shadow-sm"
+            title="Install WebAPK / PWA"
+          >
+            <Smartphone className="w-3.5 h-3.5 text-cyan-400" />
+            <span>WebAPK</span>
+          </button>
+
           {/* Agent Trigger Button */}
           <button
             id="btn-run-agent"
@@ -201,7 +244,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           <button
             id="btn-toggle-chat"
             onClick={onToggleAgentChat}
-            className={`p-1.5 rounded-lg border text-xs transition-all ${
+            className={`p-1.5 rounded-lg border text-xs transition-all cursor-pointer ${
               isChatOpen
                 ? 'bg-cyan-500/20 text-cyan-300 border-cyan-500/50'
                 : 'bg-slate-900 text-slate-400 hover:text-slate-200 border-slate-800'
@@ -215,7 +258,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           <button
             id="btn-open-export"
             onClick={onOpenExport}
-            className="p-1.5 rounded-lg bg-slate-900 text-slate-400 hover:text-slate-200 border border-slate-800 text-xs transition-all"
+            className="p-1.5 rounded-lg bg-slate-900 text-slate-400 hover:text-slate-200 border border-slate-800 text-xs transition-all cursor-pointer"
             title="Export LaTeX Proof & Python Scripts"
           >
             <Download className="w-4 h-4" />
