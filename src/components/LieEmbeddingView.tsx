@@ -16,6 +16,7 @@ import {
   Box
 } from 'lucide-react';
 import { LieEmbeddingData, LieGroupType } from '../types';
+import { MathView } from './MathView';
 
 interface LieEmbeddingViewProps {
   lieData: LieEmbeddingData;
@@ -58,20 +59,20 @@ export const LieEmbeddingView: React.FC<LieEmbeddingViewProps> = ({
           </div>
         </div>
 
-        {/* Dimension & Invariants Badges */}
+        {/* Dimension & Invariants Badges with KaTeX */}
         <div className="flex items-center gap-2 flex-wrap text-xs">
-          <div className="px-2.5 py-1 rounded-lg bg-slate-950 border border-slate-800 font-mono">
-            <span className="text-slate-500">dim(𝔤) = </span>
+          <div className="px-2.5 py-1 rounded-lg bg-slate-950 border border-slate-800 font-mono flex items-center gap-1.5">
+            <MathView math="\dim(\mathfrak{g}) =" className="text-slate-400 text-xs" />
             <span className="text-purple-300 font-bold">{lieData.dimension}</span>
           </div>
 
-          <div className="px-2.5 py-1 rounded-lg bg-slate-950 border border-slate-800 font-mono">
-            <span className="text-slate-500">Rank(𝔥) = </span>
+          <div className="px-2.5 py-1 rounded-lg bg-slate-950 border border-slate-800 font-mono flex items-center gap-1.5">
+            <MathView math="\operatorname{rank}(\mathfrak{h}) =" className="text-slate-400 text-xs" />
             <span className="text-cyan-300 font-bold">{lieData.cartanSubalgebraDim}</span>
           </div>
 
-          <div className="px-2.5 py-1 rounded-lg bg-slate-950 border border-slate-800 font-mono">
-            <span className="text-slate-500">Casimir C₂ = </span>
+          <div className="px-2.5 py-1 rounded-lg bg-slate-950 border border-slate-800 font-mono flex items-center gap-1.5">
+            <MathView math="C_2 =" className="text-slate-400 text-xs" />
             <span className="text-amber-300 font-bold">{lieData.casimirInvariantValue}</span>
           </div>
         </div>
@@ -89,7 +90,10 @@ export const LieEmbeddingView: React.FC<LieEmbeddingViewProps> = ({
                   Root System &amp; Weyl Weight Space ({lieData.rootSystemType})
                 </h3>
               </div>
-              <span className="text-[11px] text-slate-400 font-mono">Cartan dual space 𝔥*</span>
+              <div className="flex items-center gap-1 text-[11px] text-slate-400 font-mono">
+                <span>Cartan dual:</span>
+                <MathView math="\mathfrak{h}^*" className="text-purple-300 text-xs" />
+              </div>
             </div>
 
             {/* Interactive Root System Canvas */}
@@ -183,9 +187,15 @@ export const LieEmbeddingView: React.FC<LieEmbeddingViewProps> = ({
                     Generator: {activeGen.name}
                   </h4>
                 </div>
-                <div className="flex gap-2 text-[11px] font-mono text-slate-400">
-                  <span>Tr(T) = {activeGen.trace}</span>
-                  <span>||T||_F = {activeGen.frobeniusNorm}</span>
+                <div className="flex gap-3 text-[11px] font-mono text-slate-400 items-center">
+                  <span className="flex items-center gap-1">
+                    <MathView math="\operatorname{Tr}(T) =" className="text-[10px]" />
+                    <span>{activeGen.trace}</span>
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <MathView math="\|T\|_F =" className="text-[10px]" />
+                    <span>{activeGen.frobeniusNorm}</span>
+                  </span>
                 </div>
               </div>
 
@@ -225,11 +235,12 @@ export const LieEmbeddingView: React.FC<LieEmbeddingViewProps> = ({
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-2">
                 <Grid className="w-4 h-4 text-amber-400" />
-                <h3 className="text-xs font-semibold text-slate-200 uppercase tracking-wider font-mono">
-                  Cartan-Killing Metric K_ab
+                <h3 className="text-xs font-semibold text-slate-200 uppercase tracking-wider font-mono flex items-center gap-1.5">
+                  <span>Cartan-Killing Metric</span>
+                  <MathView math="K_{ab}" className="text-amber-300 text-xs" />
                 </h3>
               </div>
-              <span className="text-[10px] text-amber-400/80 font-mono">Tr(ad_a ∘ ad_b)</span>
+              <MathView math="\operatorname{Tr}(\operatorname{ad}_a \circ \operatorname{ad}_b)" className="text-[10px] text-amber-400/80" />
             </div>
             <p className="text-[11px] text-slate-400 mb-3">
               Metric tensor defining geodesic distances and curvature on the Lie group manifold.
@@ -288,8 +299,9 @@ export const LieEmbeddingView: React.FC<LieEmbeddingViewProps> = ({
           <div className="p-4 bg-slate-900/60 border border-slate-800/80 rounded-xl">
             <div className="flex items-center gap-2 mb-2">
               <Activity className="w-4 h-4 text-emerald-400" />
-              <h3 className="text-xs font-semibold text-slate-200 uppercase tracking-wider font-mono">
-                Lie Brackets [T_a, T_b] = f_ab^c T_c
+              <h3 className="text-xs font-semibold text-slate-200 uppercase tracking-wider font-mono flex items-center gap-1.5">
+                <span>Lie Brackets</span>
+                <MathView math="[T_a, T_b] = f_{ab}^c T_c" className="text-emerald-300 text-xs" />
               </h3>
             </div>
             <p className="text-[11px] text-slate-400 mb-3">

@@ -19,6 +19,7 @@ import {
   Cpu
 } from 'lucide-react';
 import { NetworkTopology, TensorNode, TensorContractionEdge } from '../types';
+import { MathView } from './MathView';
 
 interface TopologyGraphProps {
   topology: NetworkTopology;
@@ -472,10 +473,10 @@ export const TopologyGraph: React.FC<TopologyGraphProps> = ({
           {selectedNode ? (
             <div className="flex items-center gap-3">
               <div className="w-2.5 h-2.5 rounded-full bg-cyan-400" />
-              <div>
+              <div className="flex items-center gap-2">
                 <span className="font-semibold text-slate-200">{selectedNode.name}</span>
-                <span className="text-slate-400 ml-2 font-mono">({selectedNode.label})</span>
-                <span className="ml-2 px-1.5 py-0.5 rounded bg-purple-950 text-purple-300 border border-purple-800/50 font-mono text-[10px]">
+                <MathView math={selectedNode.label} className="text-cyan-300 font-mono text-xs" />
+                <span className="px-1.5 py-0.5 rounded bg-purple-950 text-purple-300 border border-purple-800/50 font-mono text-[10px]">
                   Lie: {selectedNode.lieGroup}
                 </span>
               </div>

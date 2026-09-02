@@ -14,9 +14,12 @@ import {
   Layers,
   BarChart3,
   CheckCircle2,
-  AlertCircle
+  AlertCircle,
+  Sigma,
+  Binary
 } from 'lucide-react';
 import { LieComplexityReport, NetworkTopology } from '../types';
+import { FormattedMath, MathView } from './MathView';
 
 interface LieComplexityDashboardProps {
   complexity: LieComplexityReport;
@@ -34,6 +37,9 @@ export const LieComplexityDashboard: React.FC<LieComplexityDashboardProps> = ({
     { name: 'Standard MLP (Linear Chain)', score: 28.4, class: 'Class I', color: 'text-slate-400', bg: 'bg-slate-800' },
     { name: 'Mamba-2 SSD (State-Space)', score: 62.1, class: 'Class III', color: 'text-cyan-400', bg: 'bg-cyan-950' },
     { name: 'FlashAttention-3 (Tiled QK^T)', score: 74.6, class: 'Class III', color: 'text-indigo-400', bg: 'bg-indigo-950' },
+    { name: 'MegaDetector v5a (YOLOv5x6)', score: 79.4, class: 'Class III', color: 'text-emerald-400', bg: 'bg-emerald-950' },
+    { name: 'PyTorch-Wildlife BioCLIP (Tree-10M)', score: 84.8, class: 'Class III', color: 'text-amber-400', bg: 'bg-amber-950' },
+    { name: 'Microsoft Sparrow Donut (OCR-Free)', score: 87.2, class: 'Class III', color: 'text-purple-400', bg: 'bg-purple-950' },
     { name: 'LLaMA-3.1 70B Decoder', score: 81.3, class: 'Class III', color: 'text-purple-400', bg: 'bg-purple-950' },
     { name: 'DeepSeek-V3 MoE (256 Exp)', score: 89.7, class: 'Class III', color: 'text-emerald-400', bg: 'bg-emerald-950' },
     { name: 'Symplectic Hamiltonian Attn', score: 94.2, class: 'Class IV', color: 'text-rose-400', bg: 'bg-rose-950' }
@@ -79,8 +85,9 @@ export const LieComplexityDashboard: React.FC<LieComplexityDashboardProps> = ({
 
           <div>
             <div className="flex items-center gap-2">
-              <h2 className="text-base font-bold text-slate-100">
-                Lie Complexity Index (Ω_Lie)
+              <h2 className="text-base font-bold text-slate-100 flex items-center gap-2">
+                <span>Lie Complexity Index</span>
+                <MathView math="\Omega_{\mathrm{Lie}}" className="text-cyan-300 font-bold" />
               </h2>
               <span className="px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-indigo-950 text-indigo-300 border border-indigo-700/60">
                 {complexity.complexityClass}
@@ -92,18 +99,21 @@ export const LieComplexityDashboard: React.FC<LieComplexityDashboardProps> = ({
           </div>
         </div>
 
-        {/* Quick Invariant Tags */}
+        {/* Quick Invariant Tags with KaTeX */}
         <div className="flex items-center gap-2 flex-wrap text-xs font-mono">
-          <div className="px-3 py-1.5 rounded-lg bg-slate-950 border border-slate-800">
-            <span className="text-slate-500">Commutator ||[W,W]||: </span>
+          <div className="px-3 py-1.5 rounded-lg bg-slate-950 border border-slate-800 flex items-center gap-1.5">
+            <span className="text-slate-500">Commutator:</span>
+            <MathView math="\|[W_i, W_j]\|_F" className="text-cyan-400 text-xs" />
             <span className="text-cyan-400 font-bold">{(complexity.metrics.commutatorDivergence * 100).toFixed(1)}%</span>
           </div>
-          <div className="px-3 py-1.5 rounded-lg bg-slate-950 border border-slate-800">
-            <span className="text-slate-500">Lie Span Rank: </span>
+          <div className="px-3 py-1.5 rounded-lg bg-slate-950 border border-slate-800 flex items-center gap-1.5">
+            <span className="text-slate-500">Lie Span:</span>
+            <MathView math="\operatorname{rank}(\mathfrak{g})" className="text-purple-400 text-xs" />
             <span className="text-purple-400 font-bold">{complexity.metrics.algebraicSpanRank}</span>
           </div>
-          <div className="px-3 py-1.5 rounded-lg bg-slate-950 border border-slate-800">
-            <span className="text-slate-500">Gauge Holonomy: </span>
+          <div className="px-3 py-1.5 rounded-lg bg-slate-950 border border-slate-800 flex items-center gap-1.5">
+            <span className="text-slate-500">Gauge Holonomy:</span>
+            <MathView math="\oint \mathcal{A}" className="text-amber-400 text-xs" />
             <span className="text-amber-400 font-bold">{complexity.metrics.gaugeHolonomyEnergy} rad</span>
           </div>
         </div>
@@ -124,7 +134,7 @@ export const LieComplexityDashboard: React.FC<LieComplexityDashboardProps> = ({
                 {complexity.metrics.commutatorDivergence}
               </div>
               <div className="text-[10px] text-slate-500 font-mono mt-0.5">
-                Avg ||[W_i, W_j]||_F
+                <MathView math="\mathbb{E}[\|[W_i, W_j]\|]" className="text-[10px]" />
               </div>
             </div>
 
@@ -150,7 +160,7 @@ export const LieComplexityDashboard: React.FC<LieComplexityDashboardProps> = ({
                 {complexity.metrics.gaugeHolonomyEnergy}
               </div>
               <div className="text-[10px] text-slate-500 font-mono mt-0.5">
-                Tr(P exp ∮ A) Phase
+                <MathView math="\operatorname{Tr}(\mathcal{P} e^{\oint \mathcal{A}})" className="text-[10px]" />
               </div>
             </div>
 
@@ -163,8 +173,26 @@ export const LieComplexityDashboard: React.FC<LieComplexityDashboardProps> = ({
                 {complexity.metrics.casimirDispersion}
               </div>
               <div className="text-[10px] text-slate-500 font-mono mt-0.5">
-                Var(C₂) Spectral Spread
+                <MathView math="\operatorname{Var}(C_2)" className="text-[10px]" />
               </div>
+            </div>
+          </div>
+
+          {/* Mathematical Complexity Metric Formulation */}
+          <div className="p-3.5 bg-slate-900/80 border border-slate-800 rounded-xl space-y-2">
+            <div className="flex items-center justify-between text-xs font-mono text-cyan-300">
+              <span className="font-bold flex items-center gap-1.5">
+                <Sigma className="w-4 h-4 text-cyan-400" />
+                <span>Formal Lie Complexity Metric Equation:</span>
+              </span>
+              <span className="text-[10px] text-slate-500">Normalized [0, 100]</span>
+            </div>
+            <div className="p-2.5 bg-slate-950 rounded-lg border border-slate-800 text-cyan-200">
+              <MathView
+                math="\Omega_{\mathrm{Lie}}(\mathcal{T}) = 100 \cdot \left[ 0.4 \cdot \frac{\sum_{e} \|[W_u, W_v]\|_F}{\sum_v \|W_v\|_F} + 0.35 \cdot \frac{\dim \operatorname{Span}_{\mathrm{Lie}}(\mathcal{W})}{\dim \mathfrak{g}} + 0.25 \cdot \frac{\oint_{\gamma} \mathcal{A}}{2\pi} \right]"
+                block={true}
+                className="text-xs"
+              />
             </div>
           </div>
 
@@ -173,8 +201,9 @@ export const LieComplexityDashboard: React.FC<LieComplexityDashboardProps> = ({
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
                 <BarChart3 className="w-4 h-4 text-cyan-400" />
-                <h3 className="text-xs font-semibold text-slate-200 uppercase tracking-wider font-mono">
-                  Layer-Pair Commutator Spectrum [W_i, W_j]
+                <h3 className="text-xs font-semibold text-slate-200 uppercase tracking-wider font-mono flex items-center gap-1.5">
+                  <span>Layer-Pair Commutator Spectrum</span>
+                  <MathView math="[W_i, W_j]" className="text-cyan-300 text-xs" />
                 </h3>
               </div>
               <span className="text-[11px] text-slate-400 font-mono">Subspace Generation</span>
@@ -216,8 +245,9 @@ export const LieComplexityDashboard: React.FC<LieComplexityDashboardProps> = ({
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
                 <RotateCw className="w-4 h-4 text-amber-400" />
-                <h3 className="text-xs font-semibold text-slate-200 uppercase tracking-wider font-mono">
-                  Contraction Homology Cycles (β₁ = {topology.bettiNumbers.b1})
+                <h3 className="text-xs font-semibold text-slate-200 uppercase tracking-wider font-mono flex items-center gap-1.5">
+                  <span>Contraction Homology Cycles</span>
+                  <MathView math={`(\\beta_1 = ${topology.bettiNumbers.b1})`} className="text-amber-300 text-xs" />
                 </h3>
               </div>
               <span className="text-[11px] text-amber-400/80 font-mono">Gauge Invariance &amp; Berry Phase</span>
@@ -231,13 +261,17 @@ export const LieComplexityDashboard: React.FC<LieComplexityDashboardProps> = ({
                       <span className="text-slate-500">Loop γ_{idx + 1}:</span>
                       <span>{loop.loopPath.join(' ➔ ')}</span>
                     </div>
-                    <span className="text-amber-300 font-bold">
-                      Δθ = {loop.geometricPhase.toFixed(2)} rad
+                    <span className="text-amber-300 font-bold flex items-center gap-1">
+                      <MathView math="\Delta\theta =" className="text-amber-300 text-xs" />
+                      <span>{loop.geometricPhase.toFixed(2)} rad</span>
                     </span>
                   </div>
                   <div className="flex items-center justify-between text-[11px] text-slate-400">
                     <span>{loop.description}</span>
-                    <span>Holonomy Tr(P exp ∮ A) = {loop.holonomyTrace}</span>
+                    <span className="flex items-center gap-1">
+                      <MathView math="\operatorname{Tr}(\mathcal{P} e^{\oint \mathcal{A}}) =" className="text-[10px]" />
+                      <span>{loop.holonomyTrace}</span>
+                    </span>
                   </div>
                 </div>
               ))}
@@ -302,7 +336,9 @@ export const LieComplexityDashboard: React.FC<LieComplexityDashboardProps> = ({
               {complexity.theoreticalImplications.map((imp, idx) => (
                 <div key={idx} className="flex items-start gap-2 p-2 rounded bg-slate-950/60 border border-slate-800/50">
                   <span className="text-cyan-400 font-mono font-bold mt-0.5">{idx + 1}.</span>
-                  <p className="leading-relaxed">{imp}</p>
+                  <div className="leading-relaxed flex-1">
+                    <FormattedMath text={imp} />
+                  </div>
                 </div>
               ))}
             </div>

@@ -111,7 +111,7 @@ export interface LieComplexityReport {
 export interface ModelArchitecturePreset {
   id: string;
   name: string;
-  family: 'Transformer' | 'LLM' | 'MoE' | 'State-Space' | 'Diffusion' | 'CNN' | 'Custom';
+  family: 'Transformer' | 'LLM' | 'MoE' | 'State-Space' | 'Diffusion' | 'CNN' | 'Custom' | 'ONNX-Wildlife' | 'MegaDetector' | 'Microsoft-Sparrow';
   einsumExpression: string;
   latexReduction: string;
   description: string;
@@ -134,13 +134,17 @@ export interface AgentReasoningStep {
 }
 
 export interface AgentAnalysisResponse {
-  architectureName: string;
-  einsumEquation: string;
-  latexEquation: string;
-  topology: NetworkTopology;
-  lieEmbedding: LieEmbeddingData;
-  lieComplexity: LieComplexityReport;
-  agentChainOfThought: string;
-  mathematicalProof: string;
-  recommendations: string[];
+  architectureName?: string;
+  einsumEquation?: string;
+  latexEquation?: string;
+  summary?: string;
+  modelUsed?: string;
+  aiGenerated?: boolean;
+  topology?: NetworkTopology;
+  lieEmbedding?: LieEmbeddingData;
+  lieComplexity?: LieComplexityReport;
+  agentChainOfThought?: string;
+  mathematicalProof?: string;
+  theoreticalInsights?: string[];
+  recommendations?: string[];
 }

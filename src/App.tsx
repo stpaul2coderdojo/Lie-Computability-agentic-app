@@ -126,7 +126,11 @@ export function App() {
 
       const data = await res.json();
       if (data.success && data.data) {
-        setAgentResponse(data.data);
+        setAgentResponse({
+          ...data.data,
+          modelUsed: data.modelUsed || (data.aiGenerated ? 'Gemini 3.7 Flash' : 'Antigravity Lie Engine'),
+          aiGenerated: data.aiGenerated
+        });
         if (data.data.lieComplexityScore) {
           setComplexity((prev) => ({
             ...prev,
@@ -230,6 +234,23 @@ export function App() {
           />
         )}
       </main>
+
+      {/* Research Authorship & Institutional Footer */}
+      <footer className="border-t border-slate-900 bg-slate-950/80 px-4 py-3 text-xs text-slate-500 font-mono">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 text-center sm:text-left">
+          <div className="flex items-center gap-2 flex-wrap justify-center sm:justify-start">
+            <span className="text-slate-400">Principal Author:</span>
+            <span className="text-cyan-300 font-semibold">Dr. Bheemaiah Anil Kumar</span>
+            <span className="text-slate-700">•</span>
+            <span className="text-purple-300 font-medium">Synergy Robotics</span>
+          </div>
+          <div className="text-[11px] text-slate-600 flex items-center gap-3">
+            <span>Tensor Contraction Topology &amp; Lie Complexity</span>
+            <span>•</span>
+            <span>Antigravity Engine</span>
+          </div>
+        </div>
+      </footer>
 
       {/* Antigravity CoT & Chat Drawer */}
       <AgentDrawer

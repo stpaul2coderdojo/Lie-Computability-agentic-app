@@ -67,9 +67,11 @@ export const Navbar: React.FC<NavbarProps> = ({
                   Tensor-Lie Agent
                 </span>
               </div>
-              <p className="text-[11px] text-slate-400 truncate max-w-[240px] sm:max-w-none">
-                Reduction Topology &amp; Lie Algebraic Complexity
-              </p>
+              <div className="flex items-center gap-1.5 text-[11px] text-slate-400">
+                <span className="text-cyan-400 font-medium">Synergy Robotics</span>
+                <span className="text-slate-600">•</span>
+                <span className="truncate max-w-[200px] sm:max-w-none text-slate-300">Dr. Bheemaiah Anil Kumar</span>
+              </div>
             </div>
           </div>
 

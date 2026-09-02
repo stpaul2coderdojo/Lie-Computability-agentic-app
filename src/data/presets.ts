@@ -4,8 +4,10 @@
  */
 
 import { ModelArchitecturePreset } from '../types';
+import { SPARROW_PRESETS } from './sparrowPresets';
+import { WILDLIFE_PRESETS } from './wildlifePresets';
 
-export const ARCHITECTURE_PRESETS: ModelArchitecturePreset[] = [
+const BASE_PRESETS: ModelArchitecturePreset[] = [
   {
     id: 'llama3-decoder',
     name: 'LLaMA-3.1 Decoder Layer (GQA + SwiGLU + RoPE)',
@@ -1044,4 +1046,10 @@ export const ARCHITECTURE_PRESETS: ModelArchitecturePreset[] = [
       }
     ]
   }
+];
+
+export const ARCHITECTURE_PRESETS: ModelArchitecturePreset[] = [
+  ...BASE_PRESETS,
+  ...WILDLIFE_PRESETS,
+  ...SPARROW_PRESETS
 ];
